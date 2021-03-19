@@ -8,7 +8,6 @@ from QUANTAXIS.QAEngine import QA_Thread, QA_Task
 
 # 接受并分析
 
-
 class client(QA_Thread):
 
     def __init__(self):
@@ -20,13 +19,13 @@ class client(QA_Thread):
         self.sub = subscriber(exchange='stocktransaction')
         self.sub.callback = self.callback
 
-    def subscribe(self, code='000007'):
-        req.pub(json.dumps({'topic': 'subscribe', 'code': code}),
+    def subscribe(self, code='159919'):
+        self.req.pub(json.dumps({'topic': 'subscribe', 'code': code}),
                 routing_key='stock')
 
     def callback(self, a, b, c, data):
         data = json.loads(data)
-
+        
         data = pd.DataFrame(data).set_index(['code']).loc[:, [
             'ask_vol2', 'ask2', 'ask_vol1', 'ask1', 'price', 'bid1', 'bid_vol1', 'bid2', 'bid_vol2']]
 
